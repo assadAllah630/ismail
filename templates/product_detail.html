@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ product.name_en }} <small class="text-muted">({{ product.name_ar }})</small></h2>
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.photos %}
+            <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for photo in product.photos %}
+                    <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                        <img src="{{ photo.photo_url }}" class="d-block w-100" alt="Product Photo">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            {% endif %}
+            <a href="{{ url_for('add_product_photo', product_id=product.id) }}" class="btn btn-outline-success mt-2">Add Photo</a>
+        </div>
+        <div class="col-md-6">
+            <ul class="list-group mb-3">
+                <li class="list-group-item"><strong>Item UID:</strong> {{ product.item_uid }}</li>
+                <li class="list-group-item"><strong>Item Code:</strong> {{ product.item_code }}</li>
+                <li class="list-group-item"><strong>Category:</strong> {{ product.category.name }}</li>
+                <li class="list-group-item"><strong>Short Description:</strong> {{ product.short_description }}</li>
+                <li class="list-group-item"><strong>Total Cost:</strong> {{ product.total_cost }}</li>
+                <li class="list-group-item"><strong>Barcode:</strong> {{ product.barcode }}</li>
+                <li class="list-group-item"><strong>Quantity:</strong> {{ product.quantity }}</li>
+                <li class="list-group-item"><strong>Inventory Location:</strong> {{ product.inventory_location }}</li>
+                <li class="list-group-item"><strong>Price:</strong> {{ product.price }}</li>
+                <li class="list-group-item"><strong>Cost:</strong> {{ product.cost }}</li>
+                <li class="list-group-item"><strong>Tags:</strong> {% for tag in product.tags %}{{ tag.tag.name }}{% if not loop.last %}, {% endif %}{% endfor %}</li>
+            </ul>
+            <a href="{{ url_for('edit_product', product_id=product.id) }}" class="btn btn-primary">Edit Product</a>
+        </div>
+    </div>
+    <hr>
+    <h4>Linked Media</h4>
+    <div class="row">
+        {% for pm in product.media_links %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pm.media.title }}</h5>
+                    <p class="card-text">{{ pm.media.description }}</p>
+                    {% if pm.media.media_type in ['post', 'story'] %}
+                        <img src="{{ pm.media.file_url }}" class="img-fluid" alt="Media Image">
+                    {% elif pm.media.media_type == 'reel' %}
+                        <video src="{{ pm.media.file_url }}" class="img-fluid" controls></video>
+                    {% endif %}
+                    <p class="mt-2"><span class="badge bg-info">{{ pm.media.media_type }}</span></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

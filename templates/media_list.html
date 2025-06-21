@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Media Files</h2>
+    <form class="row g-3 mb-3" method="GET">
+        <div class="col-md-3">
+            <select class="form-select" name="media_type">
+                <option value="">All Types</option>
+                <option value="post">Post</option>
+                <option value="reel">Reel</option>
+                <option value="story">Story</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" class="form-control" name="upload_date">
+        </div>
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{{ url_for('add_media') }}" class="btn btn-success float-end">Add Media</a>
+        </div>
+    </form>
+    <div class="row">
+        {% for media in media_list %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if media.media_type in ['post', 'story'] %}
+                <img src="{{ media.file_url }}" class="card-img-top" alt="Media Image">
+                {% elif media.media_type == 'reel' %}
+                <video src="{{ media.file_url }}" class="card-img-top" controls></video>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ media.title }}</h5>
+                    <p class="card-text">{{ media.description }}</p>
+                    <p><span class="badge bg-info">{{ media.media_type }}</span> | Uploaded: {{ media.upload_date.strftime('%Y-%m-%d') }}</p>
+                    <p>Linked Products:
+                        {% for pm in media.products %}
+                            <a href="{{ url_for('product_detail', product_id=pm.product.id) }}">{{ pm.product.name_en }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <a href="{{ url_for('edit_media', media_id=media.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 
