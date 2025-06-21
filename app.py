@@ -34,7 +34,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == Config.ADMIN_USERNAME and Config.ADMIN_PASSWORD_HASH, password:
+        if username == Config.ADMIN_USERNAME and Config.ADMIN_PASSWORD_HASH== password:
             login_user(AdminUser())
             return redirect(url_for('product_list'))
         else:
