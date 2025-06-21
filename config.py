@@ -8,7 +8,7 @@ load_dotenv()
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev_secret')
     ADMIN_USERNAME = os.getenv('ADMIN_USERNAME', 'admin')
-    ADMIN_PASSWORD_HASH = os.getenv('ADMIN_PASSWORD_HASH', '$2b$12$R0eWuvEMN/0tAe6OTxOP4Ows6UqWddIpUcvTCH9XJmULv6YbXL7P2')
+    ADMIN_PASSWORD_HASH = os.getenv('ADMIN_PASSWORD_HASH', '')
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{os.getenv('DB_USER', 'root')}:{os.getenv('DB_PASSWORD', '')}"
         f"@{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '3306')}/{os.getenv('DB_NAME', 'ismail_furniture')}"
